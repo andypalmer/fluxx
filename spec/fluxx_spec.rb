@@ -22,7 +22,7 @@ class Hand
 end
 
 def initial_hand
-  ["A", "B", "C"]
+  Hand.new(["A", "B", "C"])
 end
 
 def initial_drawpile
@@ -31,31 +31,31 @@ end
 
 describe "rules" do
   it "draws one" do
-    cards_in_hand = Hand.new(initial_hand)
-    cards_in_hand.add draw(1, initial_drawpile)
+    hand = initial_hand
+    hand.add draw(1, initial_drawpile)
 
-    cards_in_hand.contents.should match_array(["A", "B", "C", "X"])
+    hand.contents.should match_array(["A", "B", "C", "X"])
   end
 
   it "plays one" do
-    cards_in_hand = Hand.new(initial_hand)
-    cards_in_hand.play 1, cards_in_hand
+    hand = initial_hand
+    hand.play 1, hand
     
-    cards_in_hand.contents.should match_array(["A", "B"])
+    hand.contents.should match_array(["A", "B"])
   end
 
   it "draws two" do
-    cards_in_hand = Hand.new(initial_hand)
-    cards_in_hand.add draw(2, initial_drawpile)
+    hand = initial_hand
+    hand.add draw(2, initial_drawpile)
     
-    cards_in_hand.contents.should match_array(["A", "B", "C", "X", "Y"])
+    hand.contents.should match_array(["A", "B", "C", "X", "Y"])
   end
 
   it "plays two" do
-    cards_in_hand = Hand.new(initial_hand)
-    cards_in_hand.play 2, cards_in_hand
+    hand = initial_hand
+    hand.play 2, hand
 
-    cards_in_hand.contents.should match_array(["A"])
+    hand.contents.should match_array(["A"])
   end
 end
 
