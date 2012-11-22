@@ -3,8 +3,8 @@ class Hand
     @cards = cards
   end
 
-  def play(amount, cards)
-    @cards.pop amount
+  def play(card)
+    @cards.delete card
   end
 
   def add(cards)
@@ -46,9 +46,9 @@ describe "rules" do
   it "plays one" do
     drawpile = initial_drawpile
     hand = initial_hand(drawpile)
-    hand.play 1, hand
+    hand.play "B"
     
-    hand.contents.should match_array(["A", "B"])
+    hand.contents.should match_array(["A", "C"])
   end
 
   it "draws two" do
@@ -57,14 +57,6 @@ describe "rules" do
     hand.add drawpile.draw(2)
     
     hand.contents.should match_array(["A", "B", "C", "X", "Y"])
-  end
-
-  it "plays two" do
-    drawpile = initial_drawpile
-    hand = initial_hand(drawpile)
-    hand.play 2, hand
-
-    hand.contents.should match_array(["A"])
   end
 end
 
