@@ -1,37 +1,12 @@
-class Hand
-  def initialize(cards)
-    @cards = cards
-  end
-
-  def play(card)
-    @cards.delete card
-  end
-
-  def add(cards)
-    @cards += cards
-  end
-
-  def contents
-    Array.new @cards
-  end
-end
-
-class CardPile
-  def initialize(cards)
-    @cards = cards
-  end
-
-  def draw(amount)
-    @cards.shift(amount)
-  end
-end
+require 'hand'
+require 'pile'
 
 def initial_hand(drawpile)
   Hand.new(drawpile.draw(3))
 end
 
 def initial_drawpile
-  CardPile.new(["A", "B", "C", "X", "Y", "Z"])
+  Pile.new(["A", "B", "C", "X", "Y", "Z"])
 end
 
 describe "rules" do
