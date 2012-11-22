@@ -1,8 +1,3 @@
-
-def draw(amount, drawpile)
-  drawpile.shift amount
-end
-
 class Hand
   def initialize(cards)
     @cards = cards
@@ -21,38 +16,52 @@ class Hand
   end
 end
 
-def initial_hand
-  Hand.new(["A", "B", "C"])
+class CardPile
+  def initialize(cards)
+    @cards = cards
+  end
+
+  def draw(amount)
+    @cards.shift(amount)
+  end
+end
+
+def initial_hand(drawpile)
+  Hand.new(drawpile.draw(3))
 end
 
 def initial_drawpile
-  ["X", "Y", "Z"]
+  CardPile.new(["A", "B", "C", "X", "Y", "Z"])
 end
 
 describe "rules" do
   it "draws one" do
-    hand = initial_hand
-    hand.add draw(1, initial_drawpile)
+    drawpile = initial_drawpile
+    hand = initial_hand(drawpile)
+    hand.add drawpile.draw(1)
 
     hand.contents.should match_array(["A", "B", "C", "X"])
   end
 
   it "plays one" do
-    hand = initial_hand
+    drawpile = initial_drawpile
+    hand = initial_hand(drawpile)
     hand.play 1, hand
     
     hand.contents.should match_array(["A", "B"])
   end
 
   it "draws two" do
-    hand = initial_hand
-    hand.add draw(2, initial_drawpile)
+    drawpile = initial_drawpile
+    hand = initial_hand(drawpile)
+    hand.add drawpile.draw(2)
     
     hand.contents.should match_array(["A", "B", "C", "X", "Y"])
   end
 
   it "plays two" do
-    hand = initial_hand
+    drawpile = initial_drawpile
+    hand = initial_hand(drawpile)
     hand.play 2, hand
 
     hand.contents.should match_array(["A"])
