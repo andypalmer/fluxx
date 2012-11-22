@@ -19,5 +19,13 @@ describe "rules" do
     cards_in_hand = play_one_of(cards_in_hand)
     cards_in_hand.should eq 3
   end
+
+  it "draws two" do
+    cards_in_hand = 3
+    cards_in_hand = draw_one_into(cards_in_hand)
+    cards_in_hand = draw_one_into(cards_in_hand)
+    
+    cards_in_hand.should eq 5
+  end
 end
 
