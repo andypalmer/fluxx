@@ -65,5 +65,23 @@ describe "fluxx" do
     game.goal.should eq(goal)
     game.winner.should eq(player1)
   end
+
+  it "can play a different simple game" do
+    game = Game.new
+    keeper = Keeper.new
+    goal = Goal.new
+    game.drawpile = [goal, keeper]
+    player1 = Player.new
+    player2 = Player.new
+    game.register(player1)
+    game.register(player2)
+
+    player1.draw
+    player1.play
+
+    player2.draw
+    player2.play
+    game.winner.should eq(player2)
+  end
 end
 
