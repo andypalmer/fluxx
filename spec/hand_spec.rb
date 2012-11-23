@@ -1,6 +1,5 @@
 require 'hand'
 
-
 def initial_hand
   Hand.new(["A","B","C"])
 end
@@ -15,9 +14,20 @@ describe Hand do
 
   it "can play a specific card" do
     hand = initial_hand
-    hand.play "B"
+    keepers = []
+    keepers << hand.play("B")
     
     hand.contents.should match_array(["A", "C"])
+    keepers.should match_array(["B"])
+  end
+
+  it "can play a different card" do
+    hand = initial_hand
+    keepers = []
+    keepers << hand.play("C")
+
+    hand.contents.should match_array(["A", "B"])
+    keepers.should match_array(["C"])
   end
 
   it "can accept two cards" do
