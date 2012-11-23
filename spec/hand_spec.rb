@@ -1,24 +1,5 @@
 require 'hand'
 
-class To
-  def To.after(card)
-    return To.new(card, 1)
-  end
-
-  def To.before(card)
-    return To.new(card, 0)
-  end
-
-  def initialize(card, relative_position)
-    @card = card
-    @relative_position = relative_position
-  end
-
-  def the(cards)
-    cards.index(@card) + @relative_position
-  end
-
-end
 
 def initial_hand
   Hand.new(["A","B","C"])
