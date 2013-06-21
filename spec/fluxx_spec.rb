@@ -56,17 +56,25 @@ class Game
   end
 end
 
+module Keepers
+  LOVE = Keeper.new
+  WAR = Keeper.new
+  PEACE = Keeper.new
+end
+
+module Goals
+  ALL_YOU_NEED_IS_LOVE = Goal.new {|x| x.keepers == [Keepers::LOVE]}
+end
+
 describe "a fluxx player wins with" do
   it "All You Need Is Love" do
-    love = Keeper.new
-    aynil = Goal.new {|x| x.keepers == [love]}
     p1 = Player.new
     game = Game.new
 
     game.register(p1)
 
-    p1.keepers = [ love ]
-    game.goal = aynil
+    p1.keepers = [ Keepers::LOVE ]
+    game.goal = Goals::ALL_YOU_NEED_IS_LOVE
 
     game.winner.should be p1
   end
@@ -74,16 +82,13 @@ end
 
 describe "a fluxx player doesn't win with" do
   it "All You Need Is Love and Something Else" do
-    love = Keeper.new
-    war = Keeper.new
-    aynil = Goal.new {|x| x.keepers == [love]}
     p1 = Player.new
     game = Game.new
 
     game.register(p1)
 
-    p1.keepers = [ love, war ]
-    game.goal = aynil
+    p1.keepers = [ Keepers::LOVE, Keepers::WAR ]
+    game.goal = Goals::ALL_YOU_NEED_IS_LOVE
 
     game.winner.should be nil
   end
