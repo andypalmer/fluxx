@@ -5,14 +5,27 @@ class Keeper
 end
 
 class Goal
+  def initialize(&winning_condition)
+    @winning_condition = winning_condition
+  end
+
   def play(player,game)
     game.goal = self
+  end
+
+  def winner(players)
+    players.select( &@winning_condition ).first
   end
 end
 
 class Player
-  attr_accessor :keeper
+  attr_accessor :keepers
   attr_reader :card
+
+  def initialize
+    keepers = []
+  end
+
   def draw
     @card = @game.drawpile.shift
   end
@@ -39,49 +52,39 @@ class Game
   end
 
   def winner
-    @players.select {|x| !x.keeper.nil?}.first
+    @goal.winner(@players)
   end
 end
 
-describe "fluxx" do
-  it "can play a simple game" do
+describe "a fluxx player wins with" do
+  it "All You Need Is Love" do
+    love = Keeper.new
+    aynil = Goal.new {|x| x.keepers == [love]}
+    p1 = Player.new
     game = Game.new
-    keeper = Keeper.new
-    goal = Goal.new
-    game.drawpile = [keeper, goal]
-    player1 = Player.new
-    player2 = Player.new
-    game.register(player1)
-    game.register(player2)
 
-    player1.draw
-    player1.card.should eq(keeper)
-    player1.play
-    player1.keeper.should eq(keeper)
+    game.register(p1)
 
-    player2.draw
-    player2.card.should eq(goal)
-    player2.play
-    game.goal.should eq(goal)
-    game.winner.should eq(player1)
-  end
+    p1.keepers = [ love ]
+    game.goal = aynil
 
-  it "can play a different simple game" do
-    game = Game.new
-    keeper = Keeper.new
-    goal = Goal.new
-    game.drawpile = [goal, keeper]
-    player1 = Player.new
-    player2 = Player.new
-    game.register(player1)
-    game.register(player2)
-
-    player1.draw
-    player1.play
-
-    player2.draw
-    player2.play
-    game.winner.should eq(player2)
+    game.winner.should be p1
   end
 end
 
+describe "a fluxx player doesn't win with" do
+  it "All You Need Is Love and Something Else" do
+    love = Keeper.new
+    war = Keeper.new
+    aynil = Goal.new {|x| x.keepers == [love]}
+    p1 = Player.new
+    game = Game.new
+
+    game.register(p1)
+
+    p1.keepers = [ love, war ]
+    game.goal = aynil
+
+    game.winner.should be nil
+  end
+end
